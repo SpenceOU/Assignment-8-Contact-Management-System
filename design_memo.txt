@@ -1,0 +1,24 @@
+# DESIGN MEMO
+#
+# 1. Why is a hash table the right structure for fast lookups?
+# A hash table uses a hash function to turn a contact's name directly into an
+# array index, so I can jump to the right spot instead of scanning every
+# contact. With a reasonable table size and an even spread of names, insert
+# and search take close to constant time, O(1), no matter how many contacts
+# are stored. A list would need to check names one by one, which is O(n).
+#
+# 2. How did I handle collisions?
+# I used separate chaining. Each array slot holds either None or the head of
+# a linked list of Node objects. When two names hash to the same index, like
+# Amy and May, the new contact is added to the end of that chain. During
+# insert and search I walk the chain and compare names, so every contact is
+# still found correctly. If a name already exists, insert updates the number
+# instead of creating a duplicate.
+#
+# 3. When might an engineer choose a hash table over a list or tree?
+# A hash table is a good choice when the main job is looking things up by a
+# key, such as contacts by name, users by ID, or counting words. It beats a
+# list because it avoids scanning, and it can beat a balanced tree, whose
+# lookups take O(log n), when keys do not need to stay in sorted order. The
+# trade-off is that a hash table does not keep items sorted, and performance
+# drops if many keys collide into long chains.
